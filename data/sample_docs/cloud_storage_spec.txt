@@ -1,0 +1,34 @@
+ACME CLOUD STORAGE TECHNICAL SPECIFICATION AND PRICING MATRIX
+Document Version: 3.4
+Last Revised: 2026-08-15
+
+1. SYSTEM OVERVIEW
+Acme Cloud Storage is an object storage infrastructure designed for durable, highly available data storage with native AES-256 server-side encryption. The maximum supported single object upload size is 5 Terabytes (5 TB).
+
+2. STORAGE TIERS SPECIFICATIONS
+
+Tier A: Standard Storage
+- Target Workload: Active data accessed frequently, live web content, real-time analytics streaming.
+- Base Storage Pricing: $0.020 per Gigabyte per month ($20.48 per TB/month).
+- Retrieval Fee: $0.00 (Zero retrieval fees).
+- Minimum Storage Retention Period: None (charged pro-rata per second).
+- Service Level Agreement (SLA): 99.99% monthly availability guarantee.
+
+Tier B: Cool Storage
+- Target Workload: Infrequently accessed datasets, monthly backups, historical reporting logs.
+- Base Storage Pricing: $0.010 per Gigabyte per month ($10.24 per TB/month).
+- Retrieval Fee: $0.005 per Gigabyte retrieved.
+- Minimum Storage Retention Period: 30 days. Objects deleted prior to 30 days incur an early deletion fee.
+- Service Level Agreement (SLA): 99.9% monthly availability guarantee.
+
+Tier C: Cold Archive Storage
+- Target Workload: Long-term archival, legal compliance archives, audit records accessed less than once a year.
+- Base Storage Pricing: $0.002 per Gigabyte per month ($2.05 per TB/month).
+- Retrieval Fee: $0.020 per Gigabyte retrieved.
+- Minimum Storage Retention Period: 180 days.
+- Retrieval Latency: 3 to 5 hours for data restoration into active memory.
+- Service Level Agreement (SLA): 99.0% monthly availability guarantee.
+
+3. NETWORK AND BANDWIDTH
+Ingress bandwidth into all Acme Cloud Storage regions is completely free of charge.
+Egress to the public internet is billed at $0.08 per GB after the first 100 GB free tier each calendar billing cycle.

@@ -1,0 +1,15 @@
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
+htmlcov/
+data/chroma_db/
+eval/results.json
+.git/
+.gitignore
+.dockerignore
+.DS_Store
+.env

@@ -1,0 +1,114 @@
+[
+  {
+    "id": "q_ans_01",
+    "question": "What is the monthly employee premium contribution for the Gold Premier healthcare plan?",
+    "category": "answerable",
+    "expected_answerable": true,
+    "expected_keywords": ["120", "gold"],
+    "expected_source_documents": ["hr_benefits_policy.md"]
+  },
+  {
+    "id": "q_ans_02",
+    "question": "What is the maximum single object upload size supported in Acme Cloud Storage?",
+    "category": "answerable",
+    "expected_answerable": true,
+    "expected_keywords": ["5 tb", "5 terabytes"],
+    "expected_source_documents": ["cloud_storage_spec.txt"]
+  },
+  {
+    "id": "q_ans_03",
+    "question": "What is the initial response window for a Severity 1 security incident?",
+    "category": "answerable",
+    "expected_answerable": true,
+    "expected_keywords": ["15 minutes"],
+    "expected_source_documents": ["security_incident_response.md"]
+  },
+  {
+    "id": "q_ans_04",
+    "question": "How many peer approvals are required on a pull request before merging to main?",
+    "category": "answerable",
+    "expected_answerable": true,
+    "expected_keywords": ["2"],
+    "expected_source_documents": ["developer_onboarding.pdf"]
+  },
+  {
+    "id": "q_ans_05",
+    "question": "How many weeks of paid parental leave does Acme provide?",
+    "category": "answerable",
+    "expected_answerable": true,
+    "expected_keywords": ["16", "weeks"],
+    "expected_source_documents": ["hr_benefits_policy.md"]
+  },
+  {
+    "id": "q_unans_01",
+    "question": "What is the monthly subscription cost for Acme Cloud Storage Platinum tier?",
+    "category": "unanswerable",
+    "expected_answerable": false,
+    "expected_keywords": [],
+    "expected_source_documents": []
+  },
+  {
+    "id": "q_unans_02",
+    "question": "What is the maximum reimbursement limit for business travel meal expenses?",
+    "category": "unanswerable",
+    "expected_answerable": false,
+    "expected_keywords": [],
+    "expected_source_documents": []
+  },
+  {
+    "id": "q_unans_03",
+    "question": "What is the escalation SLA for Severity 4 security bugs?",
+    "category": "unanswerable",
+    "expected_answerable": false,
+    "expected_keywords": [],
+    "expected_source_documents": []
+  },
+  {
+    "id": "q_unans_04",
+    "question": "Which Python version and framework is required for backend microservices?",
+    "category": "unanswerable",
+    "expected_answerable": false,
+    "expected_keywords": [],
+    "expected_source_documents": []
+  },
+  {
+    "id": "q_unans_05",
+    "question": "What is the capital city of Australia?",
+    "category": "unanswerable",
+    "expected_answerable": false,
+    "expected_keywords": [],
+    "expected_source_documents": []
+  },
+  {
+    "id": "q_multi_01",
+    "question": "Compare the monthly base storage pricing and availability SLA between Standard Storage and Cool Storage.",
+    "category": "multi-evidence",
+    "expected_answerable": true,
+    "expected_keywords": ["0.020", "0.010", "99.99%", "99.9%"],
+    "expected_source_documents": ["cloud_storage_spec.txt"]
+  },
+  {
+    "id": "q_multi_02",
+    "question": "What financial stipends and reimbursements are provided to remote employees for equipment and connectivity?",
+    "category": "multi-evidence",
+    "expected_answerable": true,
+    "expected_keywords": ["750", "75", "stipend"],
+    "expected_source_documents": ["hr_benefits_policy.md"]
+  },
+  {
+    "id": "q_multi_03",
+    "question": "What are the rules regarding deployment timing and code reviews in the engineering process?",
+    "category": "multi-evidence",
+    "expected_answerable": true,
+    "expected_keywords": ["2", "peer", "friday", "14:00 utc"],
+    "expected_source_documents": ["developer_onboarding.pdf"]
+  },
+  {
+    "id": "q_multi_04",
+    "question": "Who serves as the Incident Commander for a Sev-1 incident versus a Sev-2 incident, and when are post-mortem meetings required?",
+    "category": "multi-evidence",
+    "expected_answerable": true,
+    "expected_keywords": ["ciso", "security lead", "3 business days", "post-mortem"],
+    "expected_source_documents": ["security_incident_response.md"]
+  }
+]

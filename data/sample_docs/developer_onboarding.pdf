@@ -1,0 +1,54 @@
+%PDF-1.4
+1 0 obj<</Type/Catalog/Pages 2 0 R>>endobj
+2 0 obj<</Type/Pages/Kids[3 0 R 4 0 R]/Count 2>>endobj
+3 0 obj<</Type/Page/Parent 2 0 R/MediaBox[0 0 612 792]/Contents 5 0 R/Resources<</Font<</F1 7 0 R>>>>>>endobj
+4 0 obj<</Type/Page/Parent 2 0 R/MediaBox[0 0 612 792]/Contents 6 0 R/Resources<</Font<</F1 7 0 R>>>>>>endobj
+5 0 obj<</Length 285>>stream
+BT
+/F1 14 Tf
+50 720 Td
+(Acme Engineering Onboarding Guide - Page 1) Tj
+/F1 11 Tf
+0 -35 Td
+(Git Workflow and Code Review Guidelines:) Tj
+0 -25 Td
+(All code must be branched from origin/main and named with ticket id: feature/TICKET-123.) Tj
+0 -20 Td
+(Pull requests require minimum 2 peer approvals before merging to main branch.) Tj
+0 -20 Td
+(Continuous integration test suites must pass 100 percent with test coverage above 80 percent.) Tj
+ET
+endstream
+endobj
+6 0 obj<</Length 315>>stream
+BT
+/F1 14 Tf
+50 720 Td
+(Acme Engineering Onboarding Guide - Page 2) Tj
+/F1 11 Tf
+0 -35 Td
+(Production Release and Deployment Rules:) Tj
+0 -25 Td
+(Deployments use automated canary rollout: 10 percent traffic for 30 minutes before 100 percent.) Tj
+0 -20 Td
+(Deployment freeze is enforced every Friday after 14:00 UTC and on company holidays.) Tj
+0 -20 Td
+(To immediately abort and revert an active deployment, execute: make rollback-cluster.) Tj
+ET
+endstream
+endobj
+7 0 obj<</Type/Font/Subtype/Type1/BaseFont/Helvetica>>endobj
+xref
+0 8
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000216 00000 n 
+0000000317 00000 n 
+0000000653 00000 n 
+0000001019 00000 n 
+trailer<</Size 8/Root 1 0 R>>
+startxref
+1081
+%%EOF

@@ -1,0 +1,24 @@
+services:
+  rag-assistant:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rag-assistant
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data/chroma_db:/app/data/chroma_db
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      - CHROMA_PERSIST_DIR=/app/data/chroma_db
+      - HOST=0.0.0.0
+      - PORT=8000
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s

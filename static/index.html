@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Knowledge Assistant</title>
+  <style>
+    :root {
+      --bg: #f8f9fa;
+      --surface: #ffffff;
+      --text: #212529;
+      --text-muted: #6c757d;
+      --border: #ced4da;
+      --border-light: #e9ecef;
+      --accent: #2b5278;
+      --accent-hover: #1e3b56;
+      --danger: #b02a37;
+      --badge-success-bg: #e8f5e9;
+      --badge-success-text: #1b5e20;
+      --badge-refused-bg: #fff3e0;
+      --badge-refused-text: #b76e00;
+      --badge-error-bg: #ffe3e3;
+      --badge-error-text: #c92a2a;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--text);
+      background-color: var(--bg);
+      padding: 24px 16px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 16px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    h1 {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .status-indicator {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .section-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    h2 {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    label {
+      display: block;
+      font-weight: 500;
+      font-size: 13px;
+      margin-bottom: 6px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    textarea {
+      width: 100%;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 13px;
+      background: #fff;
+      color: var(--text);
+    }
+
+    input[type="file"] {
+      width: 100%;
+      height: 38px;
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 13px;
+      background: #fff;
+      color: var(--text);
+    }
+
+    button:focus-visible,
+    input:focus-visible,
+    textarea:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 1px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 12px;
+      align-items: flex-end;
+      margin-bottom: 12px;
+    }
+
+    button {
+      background-color: var(--accent);
+      color: #fff;
+      border: 1px solid var(--accent);
+      border-radius: 4px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: var(--accent-hover);
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    #btn-upload {
+      height: 38px;
+      padding: 0 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+    }
+
+    button.btn-secondary {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 4px 8px;
+      font-size: 12px;
+      margin-right: 6px;
+    }
+
+    button.btn-secondary:hover {
+      background: #eef3f8;
+      border-color: var(--accent);
+    }
+
+    button.btn-delete {
+      background: transparent;
+      color: var(--danger);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 4px 8px;
+      font-size: 12px;
+    }
+
+    button.btn-delete:hover {
+      background: #fee;
+      border-color: var(--danger);
+    }
+
+    .btn-sample {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 4px 8px;
+      font-size: 12px;
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .btn-sample:hover {
+      background: #f1f3f5;
+      border-color: var(--accent);
+    }
+
+    .btn-history-item {
+      display: block;
+      width: 100%;
+      text-align: left;
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 6px 10px;
+      font-size: 12px;
+      margin-bottom: 6px;
+      cursor: pointer;
+    }
+
+    .btn-history-item:hover {
+      background: #f8f9fa;
+      border-color: var(--accent);
+    }
+
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin-top: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th, td {
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+    }
+
+    th {
+      background: #f1f3f5;
+      font-weight: 600;
+    }
+
+    tbody tr.doc-row:hover {
+      background-color: #f8f9fa;
+    }
+
+    .col-filename { text-align: left; }
+    .col-chunks { text-align: right; width: 80px; }
+    .col-pages { text-align: right; width: 80px; }
+    .col-size { text-align: right; width: 90px; }
+    .col-action { text-align: right; width: 190px; white-space: nowrap; }
+
+    .chunks-panel {
+      padding: 8px 4px;
+    }
+
+    .chunks-summary {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .chunk-filter-input {
+      max-width: 260px;
+      margin-bottom: 10px;
+      padding: 5px 8px;
+      font-size: 12px;
+    }
+
+    .chunk-block {
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      margin-bottom: 8px;
+      background: #fff;
+    }
+
+    .chunk-header {
+      background: #f8f9fa;
+      border-bottom: 1px solid var(--border-light);
+      padding: 6px 10px;
+      font-size: 12px;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .chunk-text {
+      padding: 8px 10px;
+      font-family: ui-monospace, Menlo, Monaco, Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.45;
+      white-space: pre-wrap;
+      word-break: break-word;
+      max-height: 160px;
+      overflow-y: auto;
+      margin: 0;
+      color: var(--text);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 2px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .badge-success {
+      background-color: var(--badge-success-bg);
+      color: var(--badge-success-text);
+    }
+
+    .badge-refusal {
+      background-color: var(--badge-refused-bg);
+      color: var(--badge-refused-text);
+    }
+
+    .badge-error {
+      background-color: var(--badge-error-bg);
+      color: var(--badge-error-text);
+    }
+
+    .answer-text {
+      font-size: 14px;
+      line-height: 1.6;
+      margin-top: 8px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .sources-list {
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .source-item {
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 10px 12px;
+      background: #fafafa;
+    }
+
+    .source-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .source-excerpt {
+      font-family: ui-monospace, Menlo, Monaco, Consolas, monospace;
+      font-size: 12px;
+      color: #333;
+      background: #fff;
+      padding: 6px 8px;
+      border: 1px solid var(--border-light);
+      border-radius: 2px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      line-height: 1.45;
+    }
+
+    .source-excerpt.collapsed {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .btn-toggle-source {
+      background: transparent;
+      color: var(--accent);
+      border: none;
+      padding: 4px 0 0 0;
+      font-size: 11px;
+      cursor: pointer;
+      text-decoration: underline;
+      display: inline-block;
+    }
+
+    .btn-toggle-source:hover {
+      color: var(--accent-hover);
+    }
+
+    .notice {
+      padding: 8px 12px;
+      margin-bottom: 12px;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+    .notice-info { background: #e7f5ff; border: 1px solid #a5d8ff; color: #1864ab; }
+    .notice-error { background: #ffe3e3; border: 1px solid #ffc9c9; color: #c92a2a; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Knowledge Assistant</h1>
+      <div id="system-status" class="status-indicator">Checking system...</div>
+    </header>
+
+    <div id="notice-area"></div>
+
+    <section class="section-card">
+      <h2>Upload documents</h2>
+      <form id="upload-form">
+        <div class="form-row">
+          <div style="flex: 1;">
+            <label for="file-input">Select files (.pdf, .txt, .md)</label>
+            <input type="file" id="file-input" name="files" multiple accept=".pdf,.txt,.md" required>
+          </div>
+          <button type="submit" id="btn-upload">Upload</button>
+        </div>
+      </form>
+
+      <div id="upload-results-section" style="display: none; margin-top: 14px;">
+        <div id="upload-results-list"></div>
+      </div>
+
+      <h2 style="margin-top: 24px;">Indexed documents</h2>
+      <div style="font-size: 12px; color: var(--text-muted); margin-top: -6px; margin-bottom: 12px;">Documents are removed when you refresh or close this page.</div>
+      <div id="documents-table-container" class="table-responsive">
+        <p class="status-indicator">Loading documents...</p>
+      </div>
+    </section>
+
+    <section class="section-card">
+      <h2>Ask a question</h2>
+      <form id="ask-form">
+        <div style="margin-bottom: 10px;">
+          <label for="question-input">Question</label>
+          <textarea id="question-input" rows="3" placeholder="Enter your question based on uploaded documents..." required></textarea>
+        </div>
+
+        <div style="margin-bottom: 14px;">
+          <div style="font-size: 12px; color: var(--text-muted); font-weight: 500; margin-bottom: 6px;">Sample questions</div>
+          <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+            <button type="button" class="btn-sample" onclick="fillQuestion(this.textContent)">What is the maximum size of a single object I can upload to Acme Cloud Storage?</button>
+            <button type="button" class="btn-sample" onclick="fillQuestion(this.textContent)">How many peer approvals does a pull request need before merging?</button>
+            <button type="button" class="btn-sample" onclick="fillQuestion(this.textContent)">What is the initial response window for a Sev-1 incident?</button>
+            <button type="button" class="btn-sample" onclick="fillQuestion(this.textContent)">What is the difference between the Gold Premier and Silver Core health plans?</button>
+            <button type="button" class="btn-sample" onclick="fillQuestion(this.textContent)">I'm a new engineer. How many approvals does my PR need, and how do I declare a security incident?</button>
+            <button type="button" class="btn-sample" onclick="fillQuestion(this.textContent)">Does Acme offer vision insurance, and what does it cost?</button>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div style="width: 140px;">
+            <label for="top-k-input">Top-K Chunks</label>
+            <input type="number" id="top-k-input" min="1" max="10" value="4">
+          </div>
+          <button type="submit" id="btn-ask">Submit Query</button>
+        </div>
+      </form>
+    </section>
+
+    <section id="answer-card" class="section-card" style="display: none;">
+      <h2>Answer</h2>
+      <div id="answer-badge" style="margin-bottom: 8px;"></div>
+      <div id="answer-content" class="answer-text"></div>
+      <div id="sources-wrapper" style="margin-top: 18px; display: none;">
+        <h2 style="font-size: 14px; margin-bottom: 8px;">Sources</h2>
+        <div id="sources-list" class="sources-list"></div>
+      </div>
+    </section>
+
+    <section id="history-card" class="section-card" style="display: none;">
+      <h2>Previous questions</h2>
+      <div id="history-list"></div>
+    </section>
+  </div>
+
+  <script>
+    const API_BASE = "";
+    function generateUUID() {
+      if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+        return crypto.randomUUID();
+      }
+      return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+        const r = (Math.random() * 16) | 0;
+        const v = c === "x" ? r : (r & 0x3) | 0x8;
+        return v.toString(16);
+      });
+    }
+
+    const sessionId = generateUUID();
+
+    const docChunksCache = {};
+    const sessionHistory = [];
+    let systemStatus = "ok";
+
+    async function apiFetch(url, options = {}) {
+      options.headers = options.headers || {};
+      if (options.headers instanceof Headers) {
+        options.headers.set("X-Session-ID", sessionId);
+      } else if (Array.isArray(options.headers)) {
+        options.headers.push(["X-Session-ID", sessionId]);
+      } else {
+        options.headers["X-Session-ID"] = sessionId;
+      }
+      return fetch(url, options);
+    }
+
+    window.addEventListener("pagehide", () => {
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon(`${API_BASE}/session/end?session_id=${encodeURIComponent(sessionId)}`);
+      }
+    });
+
+    function updateStatusDisplay(docCount, chunkCount) {
+      const el = document.getElementById("system-status");
+      if (el) {
+        el.textContent = `Status: ${systemStatus} | Documents: ${docCount} | Chunks: ${chunkCount}`;
+      }
+    }
+
+    async function loadHealth() {
+      try {
+        const res = await fetch(`${API_BASE}/health`);
+        const data = await res.json();
+        systemStatus = data.status || "ok";
+        updateStatusDisplay(0, 0);
+      } catch (err) {
+        document.getElementById("system-status").textContent = "Service offline";
+      }
+    }
+
+    async function loadDocuments() {
+      const container = document.getElementById("documents-table-container");
+      try {
+        const res = await apiFetch(`${API_BASE}/documents`);
+        const data = await res.json();
+        const docs = data.documents || [];
+        const totalChunks = docs.reduce((acc, d) => acc + (d.chunk_count || 0), 0);
+        updateStatusDisplay(docs.length, totalChunks);
+
+        if (docs.length === 0) {
+          container.innerHTML = `<table>
+            <thead>
+              <tr>
+                <th class="col-filename">Filename</th>
+                <th class="col-chunks">Chunks</th>
+                <th class="col-pages">Pages</th>
+                <th class="col-size">Size</th>
+                <th class="col-action">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="5" style="text-align: center; color: var(--text-muted); padding: 18px;">No documents uploaded yet</td></tr>
+            </tbody>
+          </table>`;
+          return;
+        }
+
+        let html = `<table>
+          <thead>
+            <tr>
+              <th class="col-filename">Filename</th>
+              <th class="col-chunks">Chunks</th>
+              <th class="col-pages">Pages</th>
+              <th class="col-size">Size</th>
+              <th class="col-action">Action</th>
+            </tr>
+          </thead>
+          <tbody>`;
+
+        for (const doc of docs) {
+          const docId = doc.document_id || doc.id;
+          const sizeKb = Math.round(doc.file_size_bytes / 1024);
+          html += `
+            <tr class="doc-row" id="doc-row-${docId}">
+              <td class="col-filename"><strong>${escapeHtml(doc.filename)}</strong></td>
+              <td class="col-chunks">${doc.chunk_count}</td>
+              <td class="col-pages">${doc.page_count ?? "N/A"}</td>
+              <td class="col-size">${sizeKb} KB</td>
+              <td class="col-action">
+                <button class="btn-secondary" id="btn-chunks-${docId}" onclick="toggleChunks('${docId}')">View chunks</button>
+                <button class="btn-delete" onclick="deleteDocument('${docId}')">Delete</button>
+              </td>
+            </tr>
+            <tr class="chunks-row" id="chunks-row-${docId}" style="display: none;">
+              <td colspan="5" style="background: #fdfdfd; padding: 12px 14px;">
+                <div class="chunks-panel" id="chunks-panel-${docId}">
+                  <p class="status-indicator">Loading chunks...</p>
+                </div>
+              </td>
+            </tr>`;
+        }
+
+        html += `</tbody></table>`;
+        container.innerHTML = html;
+      } catch (err) {
+        container.innerHTML = '<p class="status-indicator">Failed to load documents.</p>';
+      }
+    }
+
+    async function toggleChunks(docId, forceOpen = false) {
+      const row = document.getElementById(`chunks-row-${docId}`);
+      const btn = document.getElementById(`btn-chunks-${docId}`);
+      const panel = document.getElementById(`chunks-panel-${docId}`);
+      if (!row || !btn || !panel) return;
+
+      const isClosed = row.style.display === "none";
+      if (!isClosed && !forceOpen) {
+        row.style.display = "none";
+        btn.textContent = "View chunks";
+        return;
+      }
+
+      row.style.display = "";
+      btn.textContent = "Hide chunks";
+
+      if (!docChunksCache[docId]) {
+        panel.innerHTML = '<p class="status-indicator">Fetching document chunks...</p>';
+        try {
+          const res = await apiFetch(`${API_BASE}/documents/${docId}/chunks`);
+          if (!res.ok) {
+            const errData = await res.json();
+            panel.innerHTML = `<p style="color: var(--danger); font-size: 12px;">${escapeHtml(errData.error?.message || "Failed to load chunks")}</p>`;
+            return;
+          }
+          const chunkData = await res.json();
+          docChunksCache[docId] = chunkData;
+        } catch (e) {
+          panel.innerHTML = '<p style="color: var(--danger); font-size: 12px;">Network error loading chunks.</p>';
+          return;
+        }
+      }
+
+      renderChunksPanel(docId);
+    }
+
+    function renderChunksPanel(docId, query = "") {
+      const panel = document.getElementById(`chunks-panel-${docId}`);
+      const data = docChunksCache[docId];
+      if (!panel || !data) return;
+
+      panel.innerHTML = "";
+
+      // Summary line
+      const summaryDiv = document.createElement("div");
+      summaryDiv.className = "chunks-summary";
+      summaryDiv.textContent = `${data.total_chunks} chunks, size ${data.chunk_size}, overlap ${data.chunk_overlap}`;
+      panel.appendChild(summaryDiv);
+
+      // Filter input
+      const filterInput = document.createElement("input");
+      filterInput.type = "text";
+      filterInput.className = "chunk-filter-input";
+      filterInput.placeholder = "Filter chunks...";
+      filterInput.value = query;
+      filterInput.addEventListener("input", (e) => {
+        renderChunksList(docId, e.target.value);
+      });
+      panel.appendChild(filterInput);
+
+      // Chunks list container
+      const listDiv = document.createElement("div");
+      listDiv.id = `chunks-list-${docId}`;
+      panel.appendChild(listDiv);
+
+      renderChunksList(docId, query);
+    }
+
+    function renderChunksList(docId, query = "") {
+      const listDiv = document.getElementById(`chunks-list-${docId}`);
+      const data = docChunksCache[docId];
+      if (!listDiv || !data) return;
+
+      listDiv.innerHTML = "";
+      const lowerQuery = query.toLowerCase().trim();
+      const filtered = (data.chunks || []).filter(c => !lowerQuery || c.text.toLowerCase().includes(lowerQuery));
+
+      if (filtered.length === 0) {
+        const emptyMsg = document.createElement("div");
+        emptyMsg.className = "status-indicator";
+        emptyMsg.textContent = query ? "No chunks matching filter." : "No chunks available.";
+        listDiv.appendChild(emptyMsg);
+        return;
+      }
+
+      for (const chunk of filtered) {
+        const block = document.createElement("div");
+        block.className = "chunk-block";
+
+        const header = document.createElement("div");
+        header.className = "chunk-header";
+        const pageText = (chunk.page !== null && chunk.page !== undefined) ? `Page ${chunk.page} | ` : "";
+        header.textContent = `Chunk ${chunk.index} | ${pageText}${chunk.char_count} characters`;
+
+        const body = document.createElement("pre");
+        body.className = "chunk-text";
+        body.textContent = chunk.text; // Safe: textContent prevents HTML injection
+
+        block.appendChild(header);
+        block.appendChild(body);
+        listDiv.appendChild(block);
+      }
+    }
+
+    async function deleteDocument(docId) {
+      if (!confirm(`Delete document ${docId}?`)) return;
+      try {
+        const res = await apiFetch(`${API_BASE}/documents/${docId}`, { method: 'DELETE' });
+        if (res.ok) {
+          delete docChunksCache[docId];
+          showNotice("Document removed from index.", "info");
+          await loadDocuments();
+          await loadHealth();
+        } else {
+          showNotice("Failed to delete document.", "error");
+        }
+      } catch (err) {
+        showNotice("Network error deleting document.", "error");
+      }
+    }
+
+    document.getElementById("upload-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const fileInput = document.getElementById("file-input");
+      if (!fileInput.files.length) return;
+
+      const formData = new FormData();
+      for (let i = 0; i < fileInput.files.length; i++) {
+        formData.append("files", fileInput.files[i]);
+      }
+
+      const btn = document.getElementById("btn-upload");
+      btn.disabled = true;
+      btn.textContent = "Processing...";
+
+      try {
+        const res = await apiFetch(`${API_BASE}/documents`, {
+          method: "POST",
+          body: formData,
+        });
+        const data = await res.json();
+        btn.disabled = false;
+        btn.textContent = "Upload";
+        fileInput.value = "";
+
+        const resultSection = document.getElementById("upload-results-section");
+        const resultList = document.getElementById("upload-results-list");
+        resultList.innerHTML = "";
+
+        if (data.files && data.files.length > 0) {
+          resultSection.style.display = "block";
+          for (const f of data.files) {
+            const line = document.createElement("div");
+            line.style.fontSize = "12px";
+            line.style.marginBottom = "4px";
+
+            if (f.status === "failed") {
+              line.style.color = "var(--danger)";
+              line.textContent = `${f.filename}: failed (${f.error || "upload error"})`;
+            } else {
+              line.style.color = "var(--text)";
+              const pageStr = f.pages !== null ? `, ${f.pages} pages` : "";
+              line.textContent = `${f.filename}: ${f.status} (${f.total_chunks} chunks${pageStr})`;
+            }
+            resultList.appendChild(line);
+          }
+        }
+
+        if (res.ok) {
+          showNotice(data.message, "info");
+          await loadDocuments();
+
+          // Auto-expand chunks of newly uploaded file(s)
+          if (data.files) {
+            for (const f of data.files) {
+              if (f.status === "indexed" && (f.document_id || f.id)) {
+                await toggleChunks(f.document_id || f.id, true);
+              }
+            }
+          }
+        } else {
+          const errDetail = data.error ? data.error.message : "Upload error";
+          showNotice(`Error: ${errDetail}`, "error");
+        }
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = "Upload";
+        showNotice("Network error during document upload.", "error");
+      }
+    });
+
+    function fillQuestion(text) {
+      const qInput = document.getElementById("question-input");
+      qInput.value = text.trim();
+      qInput.focus();
+    }
+
+    // Allow Ctrl/Cmd+Enter in question textarea to submit
+    document.getElementById("question-input").addEventListener("keydown", (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+        e.preventDefault();
+        document.getElementById("ask-form").requestSubmit();
+      }
+    });
+
+    document.getElementById("ask-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const question = document.getElementById("question-input").value.trim();
+      const topK = parseInt(document.getElementById("top-k-input").value, 10) || 4;
+      if (!question) return;
+
+      const btn = document.getElementById("btn-ask");
+      btn.disabled = true;
+      btn.textContent = "Searching...";
+
+      const ansCard = document.getElementById("answer-card");
+      const ansBadge = document.getElementById("answer-badge");
+      const ansContent = document.getElementById("answer-content");
+      const sourcesWrapper = document.getElementById("sources-wrapper");
+      const sourcesList = document.getElementById("sources-list");
+
+      ansCard.style.display = "block";
+      ansBadge.innerHTML = '<span class="status-indicator">Searching...</span>';
+      ansContent.textContent = "";
+      sourcesWrapper.style.display = "none";
+      sourcesList.innerHTML = "";
+
+      try {
+        const res = await apiFetch(`${API_BASE}/ask`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question, top_k: topK }),
+        });
+        const data = await res.json();
+        btn.disabled = false;
+        btn.textContent = "Submit Query";
+
+        if (!res.ok) {
+          const errDetail = data.error ? data.error.message : "Query failed";
+          ansBadge.innerHTML = '<span class="badge badge-error">Error</span>';
+          ansContent.style.color = "var(--danger)";
+          ansContent.textContent = errDetail;
+          return;
+        }
+
+        displayAnswer(data);
+        saveQuestionHistory(question, data);
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = "Submit Query";
+        ansBadge.innerHTML = '<span class="badge badge-error">Error</span>';
+        ansContent.style.color = "var(--danger)";
+        ansContent.textContent = "Network request failed.";
+      }
+    });
+
+    function displayAnswer(data) {
+      const ansCard = document.getElementById("answer-card");
+      const ansBadge = document.getElementById("answer-badge");
+      const ansContent = document.getElementById("answer-content");
+      const sourcesWrapper = document.getElementById("sources-wrapper");
+      const sourcesList = document.getElementById("sources-list");
+
+      ansCard.style.display = "block";
+
+      if (!data.answerable) {
+        ansBadge.innerHTML = '<span class="badge badge-refusal">Not found in documents</span>';
+        ansContent.style.color = "var(--text-muted)";
+        ansContent.textContent = data.answer;
+        sourcesWrapper.style.display = "none";
+        sourcesList.innerHTML = "";
+        return;
+      }
+
+      ansBadge.innerHTML = '<span class="badge badge-success">Grounded Answer</span>';
+      ansContent.style.color = "var(--text)";
+      ansContent.textContent = data.answer;
+
+      if (data.sources && data.sources.length > 0) {
+        sourcesWrapper.style.display = "block";
+        sourcesList.innerHTML = "";
+
+        for (const s of data.sources) {
+          const card = document.createElement("div");
+          card.className = "source-item";
+
+          const meta = document.createElement("div");
+          meta.className = "source-meta";
+          const pageStr = s.page ? ` | Page ${s.page}` : "";
+          const scoreStr = Number(s.score).toFixed(2);
+          meta.textContent = `${s.document}${pageStr} | Score: ${scoreStr}`;
+
+          const excerpt = document.createElement("div");
+          excerpt.className = "source-excerpt collapsed";
+          excerpt.textContent = s.excerpt; // Safe: textContent
+
+          const toggleBtn = document.createElement("button");
+          toggleBtn.type = "button";
+          toggleBtn.className = "btn-toggle-source";
+          toggleBtn.textContent = "Show more";
+          toggleBtn.addEventListener("click", () => {
+            if (excerpt.classList.contains("collapsed")) {
+              excerpt.classList.remove("collapsed");
+              toggleBtn.textContent = "Show less";
+            } else {
+              excerpt.classList.add("collapsed");
+              toggleBtn.textContent = "Show more";
+            }
+          });
+
+          card.appendChild(meta);
+          card.appendChild(excerpt);
+          card.appendChild(toggleBtn);
+          sourcesList.appendChild(card);
+        }
+      } else {
+        sourcesWrapper.style.display = "none";
+        sourcesList.innerHTML = "";
+      }
+    }
+
+    function saveQuestionHistory(question, data) {
+      const existingIdx = sessionHistory.findIndex(h => h.question === question);
+      if (existingIdx !== -1) {
+        sessionHistory.splice(existingIdx, 1);
+      }
+      sessionHistory.unshift({ question, data });
+      if (sessionHistory.length > 5) {
+        sessionHistory.pop();
+      }
+      renderQuestionHistory();
+    }
+
+    function renderQuestionHistory() {
+      const historyCard = document.getElementById("history-card");
+      const historyList = document.getElementById("history-list");
+      if (sessionHistory.length === 0) {
+        historyCard.style.display = "none";
+        return;
+      }
+
+      historyCard.style.display = "block";
+      historyList.innerHTML = "";
+
+      for (const item of sessionHistory) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "btn-history-item";
+        btn.textContent = item.question; // Safe: textContent
+        btn.addEventListener("click", () => {
+          document.getElementById("question-input").value = item.question;
+          displayAnswer(item.data);
+          document.getElementById("answer-card").scrollIntoView({ behavior: "smooth", block: "nearest" });
+        });
+        historyList.appendChild(btn);
+      }
+    }
+
+    function showNotice(msg, type) {
+      const area = document.getElementById("notice-area");
+      const cls = type === "error" ? "notice-error" : "notice-info";
+      area.innerHTML = `<div class="notice ${cls}">${escapeHtml(msg)}</div>`;
+      setTimeout(() => { area.innerHTML = ""; }, 6000);
+    }
+
+    function escapeHtml(str) {
+      if (!str) return "";
+      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+
+    window.addEventListener("DOMContentLoaded", () => {
+      loadHealth();
+      loadDocuments();
+    });
+  </script>
+</body>
+</html>
